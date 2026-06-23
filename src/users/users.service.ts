@@ -10,7 +10,12 @@ export class UsersService {
     private readonly userRepository: Repository<UsersService>,
   ) {}
 
-  user_sign_up() {
-    return 'hi';
+  async user_sign_up({ email, hashPass }) {
+    const user = this.userRepository.create({
+      email: email,
+      password: hashPass,
+    });
+
+    return await this.userRepository.save(user);
   }
 }
