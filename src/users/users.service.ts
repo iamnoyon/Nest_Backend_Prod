@@ -7,7 +7,7 @@ import { User } from './entity/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<UsersService>,
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async user_sign_up({ email, hashPass }) {
@@ -16,6 +16,7 @@ export class UsersService {
       password: hashPass,
     });
 
-    return await this.userRepository.save(user);
+    await this.userRepository.save(user);
+    return true;
   }
 }

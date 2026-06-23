@@ -9,6 +9,6 @@ export class AuthService {
     const { email, password } = signupdto;
     const hashPass = await hashPassword(password);
 
-    return this.userService.user_sign_up({email, hashPass});
+    return this.userService.user_sign_up({ email, hashPass });
   }
 }
