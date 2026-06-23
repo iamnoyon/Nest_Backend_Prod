@@ -10,7 +10,7 @@ export class UsersService {
     private readonly userRepository: Repository<UsersService>,
   ) {}
 
-  user_sign_up(signupdto) {
-    return signupdto;
+  user_sign_up() {
+    return 'hi';
   }
 }
