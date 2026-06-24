@@ -32,4 +32,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AppController, AuthController, UsersController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

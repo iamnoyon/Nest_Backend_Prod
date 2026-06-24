@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,20 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
+
+  // validation pipline
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (error) => {
+        const formatedErrors = {};
+
+        error.map((err) => {
+          formatedErrors[err.property] = Object.values(err.constraints || {});
+        });
+        return new BadRequestException({ message: formatedErrors });
+      },
+    }),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }
