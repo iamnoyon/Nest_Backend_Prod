@@ -8,7 +8,13 @@ export class AuthService {
   async signUp(signupdto) {
     const { email, password } = signupdto;
     const hashPass = await hashPassword(password);
-
-    return this.userService.user_sign_up({ email, hashPass });
+    const result = await this.userService.user_sign_up({ email, hashPass });
+    if (result.success) {
+      return {
+        success: true,
+        message: 'Registration successful!',
+      };
+    }
+    return result;
   }
 }
