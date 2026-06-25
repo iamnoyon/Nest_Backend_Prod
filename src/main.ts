@@ -19,6 +19,11 @@ async function bootstrap() {
   // input validation pipline
   app.useGlobalPipes(
     new ValidationPipe({
+      whitelist: true, // remove those property those are not exist in DTO
+      forbidNonWhitelisted: false, // if true then give me error for those property are not exist in DTO
+      transform: true, // It's convert inpute as per DTO.
+
+      // modifyed error messages
       exceptionFactory: (error) => {
         const formatedErrors = {};
 
