@@ -15,7 +15,7 @@ async function bootstrap() {
     .setTitle('Customer Service Management')
     .setDescription('This is a service provider application')
     .setVersion('1.0')
-    .addBearerAuth()
+    // .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
