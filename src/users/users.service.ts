@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { comparePassword } from '../../utils/hashPassword';
-
 @Injectable()
 export class UsersService {
   constructor(
