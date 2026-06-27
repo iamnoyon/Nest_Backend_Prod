@@ -42,4 +42,8 @@ export class AuthService {
     }
     return result;
   }
+
+  async profile() {
+    return 'jo';
+  }
 }

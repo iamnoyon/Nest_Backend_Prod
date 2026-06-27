@@ -1,7 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import type { Response } from 'express';
 import { SignupDto } from './dto/signUp.dto';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -13,6 +24,7 @@ export class AuthController {
     return this.authService.signUp(signupdto);
   }
 
+  // login
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   async userLogin(
@@ -34,5 +46,14 @@ export class AuthController {
       };
     }
     return result;
+  }
+
+  // profile
+  @Get('/me')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.OK)
+  userProfile() {
+    return this.authService.profile();
   }
 }
