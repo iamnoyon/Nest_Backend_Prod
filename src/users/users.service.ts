@@ -69,6 +69,7 @@ export class UsersService {
       }
       return {
         success: true,
+        user: find_user,
       };
     } catch (error) {
       return {
