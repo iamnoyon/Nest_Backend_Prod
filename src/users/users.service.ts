@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
+import { comparePassword } from '../../utils/hashPassword';
 
 @Injectable()
 export class UsersService {
@@ -10,7 +11,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async user_sign_up({ email, hashPass }) {
+  async user_sign_up({ email, hashPass }: { email: string; hashPass: string }) {
     try {
       const find_user = await this.userRepository.findOne({
         where: { email },
@@ -28,7 +29,8 @@ export class UsersService {
         password: hashPass,
       });
 
-      const savedUser = await this.userRepository.save(user);
+      // it can return current user also
+      await this.userRepository.save(user);
 
       return {
         success: true,
@@ -36,7 +38,43 @@ export class UsersService {
     } catch (error) {
       return {
         success: false,
-        message: error.message,
+        message: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  // user login service
+  async log_in({ email, password }: { email: string; password: string }) {
+    try {
+      const find_user = await this.userRepository.findOne({
+        where: { email },
+      });
+
+      // if not found then send response
+      if (!find_user) {
+        return {
+          success: false,
+          message: 'User not exist with this email!',
+        };
+      }
+
+      // match the password
+      const isMatch = await comparePassword(password, find_user.password);
+
+      // if password is not match then send res
+      if (!isMatch) {
+        return {
+          success: false,
+          message: 'Password is incorrect!',
+        };
+      }
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Unknown error',
       };
     }
   }
