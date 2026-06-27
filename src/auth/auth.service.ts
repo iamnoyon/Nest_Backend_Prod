@@ -43,7 +43,8 @@ export class AuthService {
     return result;
   }
 
-  async profile() {
-    return 'jo';
+  async profile(req: { user: { id: number; email: string } }) {
+    const { user } = req;
+    return this.userService.get_profile(user);
   }
 }

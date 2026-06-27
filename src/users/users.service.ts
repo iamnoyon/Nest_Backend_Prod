@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { comparePassword } from '../../utils/hashPassword';
+import { JwtPayload } from 'src/auth/guards/jwt.guard';
 @Injectable()
 export class UsersService {
   constructor(
@@ -78,4 +79,7 @@ export class UsersService {
       };
     }
   }
+
+  // profile
+  async get_profile(user: JwtPayload) {}
 }
